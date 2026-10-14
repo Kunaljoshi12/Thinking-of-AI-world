@@ -4,7 +4,7 @@ This README covers 32 core programming concepts. The examples primarily use Pyth
 
 ## Table of Contents
 
-- [Part 1: Programming Fundamentals](#part-1-programming-fundamentals)
+- **[Part 1: Programming Fundamentals](#part-1-programming-fundamentals)**
   1. [Variables](#1-variables)
   2. [Constants](#2-constants)
   3. [Data Types](#3-data-types)
@@ -25,7 +25,8 @@ This README covers 32 core programming concepts. The examples primarily use Pyth
   18. [References](#18-references)
   19. [Value vs. Reference Semantics](#19-value-vs-reference-semantics)
   20. [Recursion](#20-recursion)
-- [Part 2: Problem-Solving Concepts](#part-2-problem-solving-concepts)
+
+- **[Part 2: Problem-Solving Concepts](#part-2-problem-solving-concepts)**
   21. [Problem Decomposition](#21-problem-decomposition)
   22. [Requirement Analysis](#22-requirement-analysis)
   23. [Input/Output Analysis](#23-inputoutput-analysis)
@@ -38,7 +39,8 @@ This README covers 32 core programming concepts. The examples primarily use Pyth
   30. [Abstraction](#30-abstraction)
   31. [Step-by-Step Problem Solving](#31-step-by-step-problem-solving)
   32. [Trade-off Analysis](#32-trade-off-analysis)
-- [Recommended Learning Order](#recommended-learning-order)
+
+- **[Recommended Learning Order](#recommended-learning-order)**
 
 ---
 
