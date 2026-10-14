@@ -2,7 +2,7 @@
 
 This README covers 32 core programming concepts. The examples primarily use Python, while noting where Java behaves differently. These concepts provide a foundation for learning programming, Data Structures and Algorithms (DSA), software testing, and AI development.
 
-## Table of Contents
+--- Table of Contents
 
 - **[Part 1: Programming Fundamentals](#part-1-programming-fundamentals)**
   1. [Variables](#1-variables)
