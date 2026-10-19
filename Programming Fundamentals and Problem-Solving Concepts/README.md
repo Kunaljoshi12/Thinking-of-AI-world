@@ -1,6 +1,7 @@
+
 # Programming Fundamentals and Problem-Solving Concepts
 
-This README covers 32 core programming concepts. The examples primarily use Python, while noting where Java behaves differently. These concepts provide a foundation for learning programming, Data Structures and Algorithms (DSA), software testing, and AI development.
+This README covers 42 core programming concepts across programming fundamentals, problem-solving, and object-oriented programming (OOP). The examples primarily use Python, while noting where Java behaves differently. These concepts provide a foundation for learning programming, Data Structures and Algorithms (DSA), software testing, and AI development.
 
 ## Table of Contents
 
@@ -39,6 +40,18 @@ This README covers 32 core programming concepts. The examples primarily use Pyth
   - **30.** [Abstraction](#30-abstraction)
   - **31.** [Step-by-Step Problem Solving](#31-step-by-step-problem-solving)
   - **32.** [Trade-off Analysis](#32-trade-off-analysis)
+
+- **[Part 3: Object-Oriented Programming (OOP) with Python](#part-3-object-oriented-programming-oop-with-python)**
+  - **33.** [Classes and Objects](#33-classes-and-objects)
+  - **34.** [The `__init__()` Method and `self`](#34-the-init-method-and-self)
+  - **35.** [Instance and Class Attributes](#35-instance-and-class-attributes)
+  - **36.** [Instance, Class, and Static Methods](#36-instance-class-and-static-methods)
+  - **37.** [Encapsulation](#37-encapsulation)
+  - **38.** [Inheritance](#38-inheritance)
+  - **39.** [Polymorphism](#39-polymorphism)
+  - **40.** [Abstraction in OOP](#40-abstraction-in-oop)
+  - **41.** [Composition](#41-composition)
+  - **42.** [Special Methods (Dunder Methods)](#42-special-methods-dunder-methods)
 
 - **[Recommended Learning Order](#recommended-learning-order)**
 
@@ -376,7 +389,6 @@ print(name)
 Here, `name` is global, while `message` is local to `show_name()`. Trying to access `message` outside the function raises a `NameError`.
 
 Python follows the LEGB name-resolution rule: **Local, Enclosing, Global, Built-in**.
-
 **Practical use:** Preventing naming conflicts and controlling which parts of a program can access a variable.
 
 ## 16. Lifetime of Variables
@@ -690,216 +702,4 @@ def find_largest(numbers):
 
     for number in numbers:
         if number > largest:
-            largest = number
-
-    return largest
-
-print(find_largest([10, 45, 20, 8]))  # 45
-```
-
-**Practical use:** Planning algorithms before coding, communicating solutions, and preparing for coding interviews.
-
-Pseudocode separates the logic of a solution from the syntax of a programming language.
-
-## 27. Flowcharts
-
-**Meaning:** A flowchart represents the steps and decisions of an algorithm visually.
-
-### Common symbols
-
-| Symbol | Meaning |
-|---|---|
-| Oval | Start or end |
-| Rectangle | Process or operation |
-| Diamond | Decision or condition |
-| Parallelogram | Input or output |
-| Arrow | Direction of flow |
-
-### Example: Check whether a number is even
-
-```mermaid
-flowchart TD
-    A([Start]) --> B[/Input number n/]
-    B --> C{n % 2 == 0?}
-    C -- Yes --> D[/Print "Even"/]
-    C -- No --> E[/Print "Odd"/]
-    D --> F([End])
-    E --> F
-```
-
-**Practical use:** Understanding workflows, explaining business logic, and planning complex processes before implementation.
-
-## 28. Logical Thinking
-
-**Meaning:** Logical thinking means reasoning through a problem using clear rules, conditions, and cause-and-effect relationships.
-
-Example: A user can withdraw money only if:
-- The account is active.
-- The withdrawal amount is positive.
-- The balance is sufficient.
-
-```python
-def can_withdraw(balance, amount, account_active):
-    return (
-        account_active
-        and amount > 0
-        and balance >= amount
-    )
-
-print(can_withdraw(5000, 1000, True))    # True
-print(can_withdraw(500, 1000, True))     # False
-print(can_withdraw(5000, 1000, False))   # False
-```
-
-Logical thinking involves:
-- Identifying conditions.
-- Understanding dependencies.
-- Checking assumptions.
-- Evaluating possible outcomes.
-- Finding contradictions and missing cases.
-
-**Practical use:** Business logic, debugging, test design, and building reliable applications.
-
-## 29. Pattern Recognition
-
-**Meaning:** Pattern recognition means identifying similarities, repetitions, or recurring structures across problems or data.
-
-Example: Find the pattern in this sequence:
-
-`2, 4, 6, 8, 10`
-
-Each number increases by 2.
-
-```python
-for number in range(2, 11, 2):
-    print(number)
-```
-
-A practical programming example is recognizing that these tasks share a similar structure:
-- Finding the maximum value in a list.
-- Finding the minimum value in a list.
-- Counting values that satisfy a condition.
-
-All three can involve iterating through a collection and maintaining a result.
-
-**Practical use:** Recognizing DSA patterns, identifying repeated code, analyzing datasets, and detecting trends in machine learning.
-
-**Caution:** A pattern that fits a few examples is not automatically a universal rule. Validate it against additional cases.
-
-## 30. Abstraction
-
-**Meaning:** Abstraction means focusing on essential behavior while hiding unnecessary implementation details.
-
-```python
-def calculate_tax(amount, tax_rate):
-    return amount * tax_rate
-
-tax = calculate_tax(1000, 0.18)
-print(tax)  # 180.0
-```
-
-The caller needs to know that the function accepts an amount and a rate and returns the calculated tax. The caller does not need to repeat the calculation each time.
-
-An everyday example is using an ATM. You select a withdrawal amount without needing to understand the internal banking network, database transactions, or cash dispenser mechanics.
-
-**Practical use:** Functions, classes, APIs, software architecture, and AI model interfaces.
-
-Abstraction is not simply hiding code. It means defining a clear interface and deciding which details users of that interface do not need to know.
-
-## 31. Step-by-Step Problem Solving
-
-**Meaning:** This is a systematic process for moving from a problem statement to a correct, tested solution.
-
-Follow this workflow:
-
-1. **Understand the problem:** Identify the required behavior and remove ambiguity.
-2. **Identify inputs and outputs:** Define data types, expected results, and validation rules.
-3. **Check constraints and edge cases:** List limits, boundary values, and invalid inputs.
-4. **Design the algorithm:** Break the task down and write pseudocode.
-5. **Implement the solution:** Translate the algorithm into working code.
-6. **Test the solution:** Check normal, boundary, and exceptional cases.
-7. **Analyze and improve:** Check correctness, time complexity, and memory use.
-
-### Worked example: Find the largest number
-
-Problem: Given a non-empty list of numbers, return the largest number.
-
-1. Input: `[12, 45, 7, 89, 34]`
-2. Expected output: `89`
-3. Initialize `largest` to the first number.
-4. Compare each number with `largest`.
-5. Update `largest` whenever a bigger number appears.
-6. Return the result.
-
-```python
-def find_largest(numbers):
-    if not numbers:
-        raise ValueError("Input list must not be empty")
-
-    largest = numbers[0]
-
-    for number in numbers:
-        if number > largest:
-            largest = number
-
-    return largest
-```
-
-- **Time complexity:** `O(n)`, because the algorithm examines every element.
-- **Auxiliary space complexity:** `O(1)`, because it uses a constant amount of additional storage.
-
-## 32. Trade-off Analysis
-
-**Meaning:** Trade-off analysis means comparing the advantages and disadvantages of different solutions before choosing one.
-
-There is rarely a single best solution for every situation.
-
-### Example: Searching for an element
-
-| Approach | Advantages | Disadvantages |
-|---|---|---|
-| Linear search | Simple; works on unsorted data | May examine every element |
-| Binary search | Efficient on sorted data | Requires sorted data and suitable access to elements |
-| Hash-based lookup | Expected fast lookup | Uses extra memory; collisions and implementation details matter |
-
-Other common trade-offs:
-- **Speed vs. memory:** Caching can improve response time but requires storage.
-- **Simplicity vs. flexibility:** A simple implementation may be easier to maintain but less adaptable.
-- **Accuracy vs. latency:** A larger AI model may perform better on some tasks but respond more slowly and cost more.
-- **Duplication vs. abstraction:** Reusing code reduces duplication, but excessive abstraction can make code harder to understand.
-
-**Practical use:** Selecting algorithms, designing databases, optimizing applications, and choosing AI models.
-
-The right solution depends on the requirements, constraints, expected workload, and cost of failure—not simply on which option sounds more advanced.
-
----
-
-# Recommended Learning Order
-
-Do not try to memorize all 32 topics at once. Learn them in phases and write code for each topic.
-
-| Phase | Concepts | Goal |
-|---|---|---|
-| 1. Basic syntax | Variables, constants, data types, type conversion | Store and manipulate data |
-| 2. Expressions and control | Operators, expressions, statements, input/output, conditions | Make decisions |
-| 3. Repetition | Loops, nested loops | Process repeated operations |
-| 4. Reusable code | Functions, parameters, return values, scope, lifetime | Build modular programs |
-| 5. Object behavior | Mutability, references, value/reference semantics | Understand data changes |
-| 6. Advanced fundamentals | Recursion | Solve recursive problems |
-| 7. Problem analysis | Requirements, input/output, constraints, edge cases | Define correct solutions |
-| 8. Algorithm design | Decomposition, pseudocode, flowcharts, logical thinking | Plan before coding |
-| 9. Optimization | Pattern recognition, abstraction, step-by-step solving, trade-offs | Develop efficient solutions |
-
-## Practice Checklist
-
-- [ ] Explain each concept in your own words.
-- [ ] Write at least two small programs for each programming concept.
-- [ ] Test normal inputs, boundary values, and invalid inputs.
-- [ ] Solve beginner problems using conditions, loops, and functions.
-- [ ] Write pseudocode before implementing unfamiliar problems.
-- [ ] Analyze the time and auxiliary space complexity of your solutions.
-- [ ] Review and improve your code after it works.
-
-## Final Advice
-
-Watching tutorials without writing code creates familiarity, not programming ability. For each concept, write small programs, predict their output, run them, and investigate mistakes. Once these fundamentals are solid, move on to lists and dictionaries in greater depth, strings, searching and sorting, and then Data Structures and Algorithms (DSA).
+  
