@@ -1,6 +1,6 @@
 # Programming Fundamentals and Problem-Solving Concepts
 
-This README covers 32 core programming concepts. The examples primarily use Python, while noting where Java behaves differently. These concepts provide a foundation for learning programming, Data Structures and Algorithms (DSA), software testing, and AI development.
+This README covers 42 core programming concepts across programming fundamentals, problem-solving, and object-oriented programming (OOP). The examples primarily use Python, while noting where Java behaves differently. These concepts provide a foundation for learning programming, Data Structures and Algorithms (DSA), software testing, and AI development.
 
 ## Table of Contents
 
@@ -39,6 +39,18 @@ This README covers 32 core programming concepts. The examples primarily use Pyth
   - **30.** [Abstraction](#30-abstraction)
   - **31.** [Step-by-Step Problem Solving](#31-step-by-step-problem-solving)
   - **32.** [Trade-off Analysis](#32-trade-off-analysis)
+
+- **[Part 3: Object-Oriented Programming (OOP) with Python](#part-3-object-oriented-programming-oop-with-python)**
+  - **33.** [Classes and Objects](#33-classes-and-objects)
+  - **34.** [The `__init__()` Method and `self`](#34-the-init-method-and-self)
+  - **35.** [Instance and Class Attributes](#35-instance-and-class-attributes)
+  - **36.** [Instance, Class, and Static Methods](#36-instance-class-and-static-methods)
+  - **37.** [Encapsulation](#37-encapsulation)
+  - **38.** [Inheritance](#38-inheritance)
+  - **39.** [Polymorphism](#39-polymorphism)
+  - **40.** [Abstraction in OOP](#40-abstraction-in-oop)
+  - **41.** [Composition](#41-composition)
+  - **42.** [Special Methods (Dunder Methods)](#42-special-methods-dunder-methods)
 
 - **[Recommended Learning Order](#recommended-learning-order)**
 
@@ -874,9 +886,274 @@ The right solution depends on the requirements, constraints, expected workload, 
 
 ---
 
+
+# Part 3: Object-Oriented Programming (OOP) with Python
+
+Object-oriented programming organizes code around **objects** that combine data (attributes) and behavior (methods). Python supports OOP while also allowing procedural and functional programming styles. OOP is useful when a program models entities with related data and actions, such as users, products, bank accounts, or orders.
+
+## 33. Classes and Objects
+
+**Meaning:** A class defines a kind of object, including the attributes and methods its objects can have. An object is an instance of a class.
+
+```python
+class Dog:
+    def bark(self):
+        print("Woof!")
+
+my_dog = Dog()  # Create an object (instance)
+my_dog.bark()   # Woof!
+```
+
+- `Dog` is the class.
+- `my_dog` refers to an object created from that class.
+- `bark()` is a method, meaning a function defined in a class.
+
+**Practical use:** Representing customers, products, employees, vehicles, or other entities in an application.
+
+## 34. The `__init__()` Method and `self`
+
+**Meaning:** `__init__()` initializes a newly created object. The parameter `self` refers to the current instance and is used to access that instance's attributes and methods.
+
+```python
+class Product:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+laptop = Product("Laptop", 50000)
+print(laptop.name)   # Laptop
+print(laptop.price)  # 50000
+```
+
+When `Product("Laptop", 50000)` is called, Python creates an instance and calls `__init__()` to initialize it. You write `self` explicitly in the method definition, but Python supplies the instance automatically when calling an instance method such as `laptop.show()`.
+
+**Important:** `__init__()` initializes an object; it is not the method that creates the object itself.
+
+## 35. Instance and Class Attributes
+
+**Meaning:** Instance attributes belong to individual objects. Class attributes are defined on the class and are shared through the class unless an instance shadows the attribute with its own value.
+
+```python
+class Employee:
+    company = "Example Ltd"  # Class attribute
+
+    def __init__(self, name):
+        self.name = name      # Instance attribute
+
+first = Employee("Asha")
+second = Employee("Ravi")
+
+print(first.name)       # Asha
+print(second.name)      # Ravi
+print(first.company)    # Example Ltd
+```
+
+**Watch out:** Avoid using a mutable class attribute such as a list for data that should be independent for each instance. Put per-object mutable data in `__init__()` instead.
+
+## 36. Instance, Class, and Static Methods
+
+Python classes can define different kinds of methods depending on what information the method needs.
+
+```python
+class Temperature:
+    unit = "Celsius"
+
+    def __init__(self, value):
+        self.value = value
+
+    def describe(self):
+        # Instance method: uses this object's data
+        return f"{self.value} degrees {self.unit}"
+
+    @classmethod
+    def default(cls):
+        # Class method: receives the class as cls
+        return cls(0)
+
+    @staticmethod
+    def is_valid(value):
+        # Static method: no automatic self or cls argument
+        return isinstance(value, (int, float))
+
+current = Temperature(25)
+print(current.describe())                 # 25 degrees Celsius
+print(Temperature.default().value)        # 0
+print(Temperature.is_valid(25))           # True
+```
+
+- **Instance method:** Receives `self` and commonly works with instance data.
+- **Class method:** Uses `@classmethod` and receives `cls`, the class itself.
+- **Static method:** Uses `@staticmethod` and receives no automatic instance or class argument.
+
+## 37. Encapsulation
+
+**Meaning:** Encapsulation groups data and the methods that operate on it, while defining how that data should be accessed or changed.
+
+Python does not enforce private instance variables in the same way some languages do. A leading underscore, such as `_balance`, signals that an attribute is intended for internal use. Properties can provide a controlled interface.
+
+```python
+class BankAccount:
+    def __init__(self, balance=0):
+        if balance < 0:
+            raise ValueError("Balance cannot be negative")
+        self._balance = balance
+
+    @property
+    def balance(self):
+        return self._balance
+
+    def deposit(self, amount):
+        if amount <= 0:
+            raise ValueError("Deposit must be positive")
+        self._balance += amount
+
+account = BankAccount(100)
+account.deposit(50)
+print(account.balance)  # 150
+```
+
+**Key point:** `_balance` is a convention for internal use, not strict access control. The property and method help keep the account's rules in one place.
+
+**Practical use:** Protecting business rules, such as preventing negative deposits or invalid product prices.
+
+## 38. Inheritance
+
+**Meaning:** Inheritance allows a class to reuse or extend behavior from another class. The existing class is often called the base class or parent class; the new class is the derived class or child class.
+
+```python
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return "Some sound"
+
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+pet = Dog("Buddy")
+print(pet.name)     # Buddy (inherited initialization)
+print(pet.speak())  # Woof! (overridden method)
+```
+
+`Dog` inherits from `Animal` and overrides `speak()` with specialized behavior.
+
+**Practical use:** Modeling related types that share meaningful behavior. Prefer inheritance when there is a genuine “is-a” relationship; do not use it only to avoid repeating a few lines of code.
+
+## 39. Polymorphism
+
+**Meaning:** Polymorphism lets different object types respond to the same method call in their own ways.
+
+```python
+class Dog:
+    def speak(self):
+        return "Woof!"
+
+class Cat:
+    def speak(self):
+        return "Meow!"
+
+animals = [Dog(), Cat()]
+for animal in animals:
+    print(animal.speak())
+```
+
+Output:
+
+```text
+Woof!
+Meow!
+```
+
+The loop calls `speak()` without needing to check whether each object is a `Dog` or a `Cat`. Each object's implementation determines the result.
+
+**Practical use:** Writing extensible code for payment methods, notification channels, file formats, or different kinds of user interfaces.
+
+## 40. Abstraction in OOP
+
+**Meaning:** Abstraction exposes the essential operations of a type while leaving implementation details behind a clear interface. This is related to the general problem-solving concept of abstraction in Part 2, but here it is applied to class design.
+
+Python's `abc` module supports abstract base classes. An abstract method declares behavior that concrete subclasses must implement before they can be instantiated.
+
+```python
+from abc import ABC, abstractmethod
+
+class PaymentMethod(ABC):
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+class CardPayment(PaymentMethod):
+    def pay(self, amount):
+        return f"Paid {amount} by card"
+
+payment = CardPayment()
+print(payment.pay(500))  # Paid 500 by card
+```
+
+**Key point:** `PaymentMethod` defines the interface. `CardPayment` supplies the implementation. Python prevents creating an instance of `PaymentMethod` while its abstract methods remain unimplemented.
+
+## 41. Composition
+
+**Meaning:** Composition builds a class by giving it objects of other classes to use. It is often described as a “has-a” relationship, whereas inheritance often models an “is-a” relationship.
+
+```python
+class Engine:
+    def start(self):
+        return "Engine started"
+
+class Car:
+    def __init__(self, engine):
+        self.engine = engine
+
+    def start(self):
+        return self.engine.start()
+
+car = Car(Engine())
+print(car.start())  # Engine started
+```
+
+A `Car` has an `Engine` and delegates engine-starting behavior to it.
+
+**Practical use:** Combining reusable components such as a shopping cart with a discount calculator, an application with a logger, or a car with an engine.
+
+**Design tip:** Composition is often more flexible than deep inheritance hierarchies because components can be replaced or combined more easily.
+
+## 42. Special Methods (Dunder Methods)
+
+**Meaning:** Special methods have names surrounded by double underscores, such as `__init__()` and `__str__()`. Python uses them to support built-in behavior and operators for custom objects.
+
+```python
+class Book:
+    def __init__(self, title, pages):
+        self.title = title
+        self.pages = pages
+
+    def __str__(self):
+        return f"{self.title} ({self.pages} pages)"
+
+    def __len__(self):
+        return self.pages
+
+book = Book("Python Basics", 250)
+print(book)       # Python Basics (250 pages)
+print(len(book))  # 250
+```
+
+- `__str__()` defines a readable string representation used by `print()` and `str()`.
+- `__len__()` defines the behavior of `len()` for the object.
+- `__init__()` initializes the object, as described in Concept 34.
+
+**Important:** Do not call special methods directly unless you have a specific reason. Prefer normal syntax such as `str(book)` and `len(book)` so Python invokes the appropriate method.
+
+**Practical use:** Making custom classes work naturally with Python features such as printing, comparisons, iteration, and arithmetic.
+
+---
+
 # Recommended Learning Order
 
-Do not try to memorize all 32 topics at once. Learn them in phases and write code for each topic.
+Do not try to memorize all 42 topics at once. Learn them in phases and write code for each topic.
 
 | Phase | Concepts | Goal |
 |---|---|---|
@@ -889,6 +1166,8 @@ Do not try to memorize all 32 topics at once. Learn them in phases and write cod
 | 7. Problem analysis | Requirements, input/output, constraints, edge cases | Define correct solutions |
 | 8. Algorithm design | Decomposition, pseudocode, flowcharts, logical thinking | Plan before coding |
 | 9. Optimization | Pattern recognition, abstraction, step-by-step solving, trade-offs | Develop efficient solutions |
+| 10. OOP foundations | Classes, objects, `__init__()`, `self`, attributes, and methods | Model related data and behavior |
+| 11. OOP design | Encapsulation, inheritance, polymorphism, abstraction, composition, special methods | Build maintainable, extensible applications |
 
 ## Practice Checklist
 
@@ -902,4 +1181,4 @@ Do not try to memorize all 32 topics at once. Learn them in phases and write cod
 
 ## Final Advice
 
-Watching tutorials without writing code creates familiarity, not programming ability. For each concept, write small programs, predict their output, run them, and investigate mistakes. Once these fundamentals are solid, move on to lists and dictionaries in greater depth, strings, searching and sorting, and then Data Structures and Algorithms (DSA).
+Watching tutorials without writing code creates familiarity, not programming ability. For each concept, write small programs, predict their output, run them, and investigate mistakes. Once these fundamentals are solid, practise object-oriented programming with small projects, then move on to lists and dictionaries in greater depth, strings, searching and sorting, and Data Structures and Algorithms (DSA).
