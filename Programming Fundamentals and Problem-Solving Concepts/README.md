@@ -1168,17 +1168,3 @@ Do not try to memorize all 42 topics at once. Learn them in phases and write cod
 | 9. Optimization | Pattern recognition, abstraction, step-by-step solving, trade-offs | Develop efficient solutions |
 | 10. OOP foundations | Classes, objects, `__init__()`, `self`, attributes, and methods | Model related data and behavior |
 | 11. OOP design | Encapsulation, inheritance, polymorphism, abstraction, composition, special methods | Build maintainable, extensible applications |
-
-## Practice Checklist
-
-- [ ] Explain each concept in your own words.
-- [ ] Write at least two small programs for each programming concept.
-- [ ] Test normal inputs, boundary values, and invalid inputs.
-- [ ] Solve beginner problems using conditions, loops, and functions.
-- [ ] Write pseudocode before implementing unfamiliar problems.
-- [ ] Analyze the time and auxiliary space complexity of your solutions.
-- [ ] Review and improve your code after it works.
-
-## Final Advice
-
-Watching tutorials without writing code creates familiarity, not programming ability. For each concept, write small programs, predict their output, run them, and investigate mistakes. Once these fundamentals are solid, practise object-oriented programming with small projects, then move on to lists and dictionaries in greater depth, strings, searching and sorting, and Data Structures and Algorithms (DSA).
