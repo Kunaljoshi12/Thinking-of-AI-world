@@ -1,44 +1,50 @@
-\# Thinking of AI World
+Thinking of AI World
 
+Welcome to my learning repository! This repository contains my notes, practical examples, and hands-on exercises as I learn programming and Artificial Intelligence (AI).
 
+Topics
 
-Welcome to my learning repository! This repository contains my notes and practical examples as I learn programming and Artificial Intelligence.
+1. Programming Fundamentals and Problem-Solving
 
+Learn programming fundamentals, logical thinking, and problem-solving techniques that form the foundation of software development.
 
+Topics covered:
 
-\## Topics
+- Programming fundamentals
+- Variables, data types, and operators
+- Conditional statements and loops
+- Functions and data structures
+- Logical thinking and problem-solving
+- Basic algorithms and computational thinking
 
+➡️ "Explore Programming Fundamentals and Problem-Solving" (https://github.com/Kunaljoshi12/Thinking-of-AI-world/tree/main/Programming%20Fundamentals%20and%20Problem-Solving%20Concepts)
 
+2. Generative AI vs AI Agents vs AI
 
-\### 1. Programming Fundamentals and Problem-Solving
+Learn the differences between Artificial Intelligence (AI), Generative AI, and AI Agents, including their capabilities and practical applications.
 
-Learn programming fundamentals, logical thinking, and problem-solving techniques.
+Topics covered:
 
+- Artificial Intelligence (AI)
+- Generative AI
+- Large Language Models (LLMs)
+- AI Agents
+- Differences between AI models and AI agents
+- Real-world applications of AI
 
+➡️ "Explore Generative AI and AI Agents" (https://github.com/Kunaljoshi12/Thinking-of-AI-world/tree/main/Gen%20AI%20vs%20AI%20Agent%20vs%20AI)
 
-\[Open Programming Fundamentals and Problem-Solving Concepts](./Programming%20Fundamentals%20and%20Problem-Solving%20Concepts/README.md)
+Learning Goals
 
+- [ ] Build strong programming fundamentals.
+- [ ] Improve logical thinking and problem-solving skills.
+- [ ] Understand Generative AI and Large Language Models (LLMs).
+- [ ] Learn Retrieval-Augmented Generation (RAG).
+- [ ] Understand AI agents and agentic AI systems.
+- [ ] Develop practical AI-powered applications.
 
+About This Repository
 
-\### 2. Generative AI and AI Agents
+This repository documents my continuous learning journey in programming, software development, and Artificial Intelligence. I will keep adding notes, code examples, and practical projects as I progress.
 
-Learn about the differences between Artificial Intelligence, Generative AI, and AI Agents.
-
-
-
-\[Open Gen AI vs AI Agent vs AI](./Gen%20AI%20vs%20AI%20Agent%20vs%20AI/README.md)
-
-
-
-\## Learning Goals
-
-
-
-\- Build strong programming fundamentals.
-
-\- Understand Generative AI and Large Language Models.
-
-\- Learn Retrieval-Augmented Generation (RAG).
-
-\- Develop AI agents and agentic AI applications.
-
+Learning by building, experimenting, and solving real-world problems.
