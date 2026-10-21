@@ -17,7 +17,7 @@ Learn programming fundamentals, logical thinking, and problem-solving techniques
 - Logical thinking and problem-solving
 - Basic algorithms and computational thinking
 
-➡️ [Explore Programming Fundamentals and Problem-Solving](https://github.com/Kunaljoshi12/Thinking-of-AI-world/tree/main/Programming%20Fundamentals%20and%20Problem-Solving%20Concepts)
+➡️ [Explore Programming Fundamentals and Problem-Solving](https://github.com/Kunaljoshi12/Thinking-of-AI-world/blob/main/Programming%20Fundamentals.md)
 
 ### 2. Generative AI vs AI Agents vs AI
 
@@ -38,7 +38,7 @@ Learn the differences between Artificial Intelligence (AI), Generative AI, and A
 
 Learn database concepts and practice SQL with examples for MySQL and Microsoft SQL Server.
 
-➡️ [Explore Database Fundamentals](https://github.com/Kunaljoshi12/Thinking-of-AI-world/tree/main/DataBase%20Fundatamentals#1-dbms-fundamentals)
+➡️ [Explore Database Fundamentals](https://github.com/Kunaljoshi12/Thinking-of-AI-world/blob/main/DataBase%20Fundamentals.md)
 
 ## Learning Goals
 
