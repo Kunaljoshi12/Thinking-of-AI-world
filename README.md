@@ -40,17 +40,6 @@ Learn database concepts and practice SQL with examples for MySQL and Microsoft S
 
 ➡️ [Explore Database Fundamentals](https://github.com/Kunaljoshi12/Thinking-of-AI-world/blob/main/DataBase%20Fundamentals.md)
 
-## Learning Goals
-
-- [ ] Build strong programming fundamentals.
-- [ ] Improve logical thinking and problem-solving skills.
-- [ ] Understand Generative AI and Large Language Models (LLMs).
-- [ ] Learn Retrieval-Augmented Generation (RAG).
-- [ ] Understand AI agents and agentic AI systems.
-- [ ] Develop practical AI-powered applications.
-
-## About This Repository
-
 This repository documents my continuous learning journey in programming, software development, and Artificial Intelligence. I will keep adding notes, code examples, and practical projects as I progress.
 
 Learning by building, experimenting, and solving real-world problems.
