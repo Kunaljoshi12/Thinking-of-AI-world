@@ -22,13 +22,13 @@ A practical guide to understanding Object-Oriented Programming (OOP) concepts, w
 16. [Aggregation](#16-aggregation)
 17. [Association](#17-association)
 18. [Dependency](#18-dependency)
-19. [Coupling](#19-coupling)
-20. [Cohesion](#20-cohesion)
-21. [SOLID Principles](#21-solid-principles)
-22. [Quick Comparison](#22-quick-comparison)
-23. [Best Practices](#23-best-practices)
-24. [Summary](#24-summary)
-
+19. [Dependency Injection (DI)](#19-dependency-injection-di)
+20. [Coupling](#20-coupling)
+21. [Cohesion](#21-cohesion)
+22. [SOLID Principles](#22-solid-principles)
+23. [Quick Comparison](#23-quick-comparison)
+24. [Best Practices](#24-best-practices)
+25. [Summary](#25-summary)
 ---
 
 ## 1. Introduction to OOP
@@ -1028,7 +1028,467 @@ Passing a dependency into a method or constructor is one way to reduce tight cou
 
 ---
 
-## 19. Coupling
+## 19. Dependency Injection (DI)
+
+### Definition
+
+**Dependency Injection (DI)** is a software design technique in which a class receives the objects or services it needs from outside instead of creating those dependencies itself.
+
+In Object-Oriented Programming, a class often depends on other classes to perform its responsibilities. Dependency Injection makes these relationships explicit and allows dependencies to be replaced without changing the class that uses them.
+
+**In simple words:** Instead of a class creating everything it needs, we provide those required objects from outside.
+
+### 19.1 Understanding Dependencies
+
+Consider an application that registers users and stores their information in a database.
+
+The `UserService` class needs a database object to save a user.
+
+```python
+class Database:
+    def save(self, username):
+        print(f"Saving {username} to the database")
+
+
+class UserService:
+    def __init__(self):
+        self.database = Database()
+
+    def register_user(self, username):
+        self.database.save(username)
+
+
+service = UserService()
+service.register_user("Kunal")
+```
+
+**Output:**
+
+```text
+Saving Kunal to the database
+```
+
+This code works, but `UserService` creates its own `Database` instance.
+
+This creates tight coupling because `UserService` decides which database implementation to use.
+
+If we want to replace the database with a mock database for testing or a different implementation in production, we may need to modify the `UserService` class.
+
+Dependency Injection addresses this problem.
+
+---
+
+### 19.2 Dependency Injection Example
+
+Instead of creating the database inside `UserService`, pass the database object into its constructor.
+
+```python
+class Database:
+    def save(self, username):
+        print(f"Saving {username} to the database")
+
+
+class UserService:
+    def __init__(self, database):
+        self.database = database
+
+    def register_user(self, username):
+        self.database.save(username)
+
+
+database = Database()
+
+service = UserService(database)
+
+service.register_user("Kunal")
+```
+
+**Output:**
+
+```text
+Saving Kunal to the database
+```
+
+### Explanation
+
+1. The `Database` class defines the operation used to save a username.
+2. The `UserService` constructor accepts a database object.
+3. The caller creates the database object and passes it to `UserService`.
+4. `UserService` uses the injected object without creating it internally.
+
+The database is the dependency, and passing it into `UserService` is dependency injection.
+
+**Key point:** Dependency Injection separates object creation from object usage.
+
+---
+
+### 19.3 Types of Dependency Injection
+
+Three common forms are constructor injection, setter injection, and method injection.
+
+#### A. Constructor Injection
+
+The dependency is provided when the object is created.
+
+```python
+class EmailService:
+    def send_email(self, message):
+        print(f"Email sent: {message}")
+
+
+class OrderService:
+    def __init__(self, email_service):
+        self.email_service = email_service
+
+    def place_order(self):
+        print("Order placed successfully")
+        self.email_service.send_email(
+            "Your order has been confirmed"
+        )
+
+
+email_service = EmailService()
+order_service = OrderService(email_service)
+
+order_service.place_order()
+```
+
+**Output:**
+
+```text
+Order placed successfully
+Email sent: Your order has been confirmed
+```
+
+**When to use it:** Use constructor injection when a dependency is required for the object to operate correctly.
+
+**Advantages:**
+- Required dependencies are explicit.
+- The object can be initialized in a valid state.
+- Dependencies are easy to replace during testing.
+- The class is easier to understand.
+
+Constructor injection is generally the preferred default for required dependencies.
+
+#### B. Setter Injection
+
+The dependency is provided or replaced through a setter method after the object has been created.
+
+```python
+class NotificationService:
+    def send(self, message):
+        print(f"Notification: {message}")
+
+
+class OrderService:
+    def __init__(self):
+        self.notification_service = None
+
+    def set_notification_service(self, service):
+        self.notification_service = service
+
+    def place_order(self):
+        print("Order placed")
+
+        if self.notification_service is not None:
+            self.notification_service.send(
+                "Order confirmation"
+            )
+
+
+service = OrderService()
+
+notification = NotificationService()
+service.set_notification_service(notification)
+
+service.place_order()
+```
+
+**Output:**
+
+```text
+Order placed
+Notification: Order confirmation
+```
+
+**When to use it:** Use setter injection when a dependency is genuinely optional or needs to be replaced after initialization.
+
+**Limitation:** An object may be created without a required dependency, leading to incomplete initialization or runtime errors. If the dependency is mandatory, constructor injection is usually safer.
+
+#### C. Method Injection
+
+The dependency is passed directly to the method that needs it.
+
+```python
+class Report:
+    def generate(self):
+        return "Monthly sales report"
+
+
+class ReportExporter:
+    def export(self, report, formatter):
+        formatted_report = formatter.format(report.generate())
+        print(formatted_report)
+
+
+class TextFormatter:
+    def format(self, text):
+        return f"REPORT: {text}"
+
+
+report = Report()
+formatter = TextFormatter()
+
+exporter = ReportExporter()
+exporter.export(report, formatter)
+```
+
+**Output:**
+
+```text
+REPORT: Monthly sales report
+```
+
+**When to use it:** Use method injection when a dependency is needed only for a particular operation rather than throughout the object's lifetime.
+
+For example, a report exporter might receive a PDF formatter for one export and a text formatter for another.
+
+---
+
+### 19.4 Dependency Injection Using an Interface or Protocol
+
+Dependency Injection becomes more useful when the receiving class depends on a contract instead of a specific implementation.
+
+Python provides `typing.Protocol` for defining structural interfaces.
+
+```python
+from typing import Protocol
+
+
+class PaymentProcessor(Protocol):
+    def pay(self, amount: float) -> None:
+        ...
+
+
+class CardPayment:
+    def pay(self, amount: float) -> None:
+        print(f"Paid {amount} using card")
+
+
+class UpiPayment:
+    def pay(self, amount: float) -> None:
+        print(f"Paid {amount} using UPI")
+
+
+class CheckoutService:
+    def __init__(self, payment_processor: PaymentProcessor):
+        self.payment_processor = payment_processor
+
+    def checkout(self, amount: float):
+        self.payment_processor.pay(amount)
+
+
+card = CardPayment()
+upi = UpiPayment()
+
+card_checkout = CheckoutService(card)
+upi_checkout = CheckoutService(upi)
+
+card_checkout.checkout(1000)
+upi_checkout.checkout(500)
+```
+
+**Output:**
+
+```text
+Paid 1000 using card
+Paid 500 using UPI
+```
+
+### Explanation
+
+- `PaymentProcessor` describes the required behavior.
+- `CardPayment` and `UpiPayment` provide different implementations.
+- `CheckoutService` receives whichever implementation the caller chooses.
+- The checkout logic does not need to know how each payment method works.
+
+Python's `Protocol` supports static type checking; it does not automatically enforce the interface at runtime.
+
+This design allows new payment implementations to be introduced without rewriting the checkout service.
+
+---
+
+### 19.5 Dependency Injection for Unit Testing
+
+One of the most practical benefits of Dependency Injection is that it allows dependencies to be replaced with test doubles.
+
+A test double is a simplified object used instead of a real dependency during testing.
+
+Consider a service that stores customer data.
+
+```python
+class UserRepository:
+    def save(self, username):
+        print(f"Saving {username} to the real database")
+
+
+class UserService:
+    def __init__(self, repository):
+        self.repository = repository
+
+    def register_user(self, username):
+        if not username:
+            raise ValueError("Username is required")
+
+        self.repository.save(username)
+        return True
+
+
+class FakeRepository:
+    def __init__(self):
+        self.saved_users = []
+
+    def save(self, username):
+        self.saved_users.append(username)
+
+
+fake_repository = FakeRepository()
+user_service = UserService(fake_repository)
+
+result = user_service.register_user("Kunal")
+
+assert result is True
+assert fake_repository.saved_users == ["Kunal"]
+
+print("Test passed")
+```
+
+**Output:**
+
+```text
+Test passed
+```
+
+### Why this test is useful
+
+- It does not require a real database connection.
+- It verifies that the service sends the expected username to its dependency.
+- It runs quickly and deterministically.
+- It isolates the business logic from database infrastructure.
+
+This is especially useful when testing payment services, email services, APIs, file systems, and other external dependencies.
+
+---
+
+### 19.6 Dependency Injection in Real-World Applications
+
+| Application | Injected dependency | Benefit |
+|---|---|---|
+| Banking application | Database repository | Replace database implementations and test business logic |
+| E-commerce application | Payment processor | Switch between payment providers |
+| Notification system | Email or SMS service | Select notification channels |
+| REST API application | HTTP client | Replace external API calls with test doubles |
+| Reporting system | PDF or CSV formatter | Support multiple output formats |
+| AI application | LLM client | Switch model providers or use a fake client in tests |
+| Playwright test framework | API client or test-data provider | Isolate tests and reuse setup logic |
+
+### Example: Dependency Injection in an AI Application
+
+An AI application may need an LLM client to generate a response.
+
+```python
+class FakeLLM:
+    def generate(self, prompt):
+        return f"Test response for: {prompt}"
+
+
+class AIService:
+    def __init__(self, llm):
+        self.llm = llm
+
+    def summarize(self, text):
+        prompt = f"Summarize this text: {text}"
+        return self.llm.generate(prompt)
+
+
+llm = FakeLLM()
+ai_service = AIService(llm)
+
+result = ai_service.summarize("OOP organizes code around objects.")
+
+print(result)
+```
+
+**Output:**
+
+```text
+Test response for: Summarize this text: OOP organizes code around objects.
+```
+
+The `AIService` does not depend on a particular LLM provider. A real client can be injected in production, while a fake client can be injected during unit testing.
+
+The example uses a fake client only; it does not make an actual AI API request.
+
+---
+
+### 19.7 Dependency Injection vs Dependency Inversion
+
+These concepts are related, but they are not the same.
+
+| Dependency Injection | Dependency Inversion Principle |
+|---|---|
+| A technique for supplying dependencies from outside a class | A design principle about the direction of dependencies |
+| Focuses on how dependencies are provided | Focuses on what high-level and low-level modules depend on |
+| Can be implemented through constructors, setters, or methods | Commonly uses abstractions to decouple business logic from implementation details |
+| Does not automatically guarantee good architecture | Helps guide the design of maintainable architecture |
+
+For example, passing a concrete database object into a service is Dependency Injection. Having that service depend on a database contract rather than a particular database implementation is an application of the Dependency Inversion Principle.
+
+**Dependency Injection can help implement Dependency Inversion, but they are not interchangeable terms.**
+
+---
+
+### 19.8 Common Mistakes
+
+1. **Creating dependencies inside the class anyway.** If the class constructs the concrete dependency itself, it loses much of the flexibility DI is meant to provide.
+2. **Using setter injection for mandatory dependencies.** This allows objects to exist in an invalid state.
+3. **Creating unnecessary interfaces.** Do not introduce an abstraction for every class without a practical reason.
+4. **Assuming DI requires a framework.** Plain Python constructors and method parameters are enough.
+5. **Confusing DI with dependency inversion.** One is a technique; the other is a design principle.
+6. **Injecting too many dependencies into one class.** This can indicate that the class has too many responsibilities.
+7. **Testing only that a mock was called.** Verify important business outcomes and behavior, not just implementation details.
+
+---
+
+### 19.9 Best Practices
+
+- Prefer constructor injection for required dependencies.
+- Use method injection for dependencies needed by only one operation.
+- Use setter injection for optional or replaceable dependencies.
+- Depend on stable contracts when multiple implementations are needed.
+- Keep object creation in an appropriate composition root, such as the application entry point.
+- Use fake dependencies or mocks to isolate unit tests.
+- Avoid introducing a dependency-injection framework unless application complexity justifies it.
+- Keep dependencies explicit rather than hiding them in global variables.
+
+### Summary
+
+Dependency Injection is a technique for supplying a class with the objects it needs instead of having that class create those objects itself.
+
+It improves testability and replaceability and can reduce tight coupling when combined with well-designed interfaces.
+
+The key distinction is:
+
+**Without DI:** The class decides which dependency to create.
+
+**With DI:** The caller supplies the dependency, allowing the class to focus on its own responsibility.
+
+
+---
+
+---
+
+## 20. Coupling
 
 ### Definition
 
@@ -1110,7 +1570,7 @@ Low coupling does not mean eliminating all dependencies. Software components mus
 
 ---
 
-## 20. Cohesion
+## 21. Cohesion
 
 ### Definition
 
@@ -1174,7 +1634,7 @@ A common design goal is **low unnecessary coupling and high cohesion**.
 
 ---
 
-## 21. SOLID Principles
+## 22. SOLID Principles
 
 SOLID is a set of five object-oriented design principles intended to make software easier to maintain, extend, and test.
 
@@ -1411,7 +1871,7 @@ SOLID principles are guidelines, not absolute laws. Apply them where they reduce
 
 ---
 
-## 22. Quick Comparison
+## 23. Quick Comparison
 
 | Concept | Main question it answers |
 |---|---|
@@ -1438,7 +1898,7 @@ SOLID principles are guidelines, not absolute laws. Apply them where they reduce
 
 ---
 
-## 23. Best Practices
+## 24. Best Practices
 
 1. **Use meaningful names.** Prefer `BankAccount` over `DataClass`.
 2. **Keep classes focused.** Avoid combining unrelated business responsibilities.
@@ -1453,9 +1913,7 @@ SOLID principles are guidelines, not absolute laws. Apply them where they reduce
 11. **Understand Python's conventions.** Double underscores provide name mangling, not absolute privacy; protocols usually provide static typing rather than runtime enforcement.
 12. **Prefer readable code.** A simple design is better than a complicated design with unnecessary patterns.
 
----
-
-## 24. Summary
+## 25. Summary
 
 Object-Oriented Programming provides a way to organize code around objects that combine state and behavior.
 
