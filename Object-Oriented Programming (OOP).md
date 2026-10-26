@@ -1470,9 +1470,3 @@ The most important concepts to understand first are:
 7. Composition, aggregation, association, and dependency
 8. Coupling and cohesion
 9. SOLID design principles
-
-### Recommended learning sequence
-
-Start by writing small classes and creating objects. Then practice encapsulation and inheritance, followed by polymorphism and abstract contracts. Once you can build working object-oriented programs, study composition, coupling, cohesion, and SOLID using real projects.
-
-**The goal is not to memorize definitions. It is to understand how these concepts help you design software that is easier to test, change, and maintain.**
