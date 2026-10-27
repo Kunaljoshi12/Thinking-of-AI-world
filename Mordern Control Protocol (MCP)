@@ -4,37 +4,29 @@
 
 This README converts the source notes into a GitHub-friendly Markdown document. It follows the original nine-section structure and preserves the examples and caveats from the notes.
 
-## MCP at a glance
+![MCP Explained infographic](mcp-explained-infographic.png)
 
-This README is **self-contained**: its diagrams are written in Mermaid, so no separate PNG or ZIP file is needed. GitHub renders Mermaid diagrams in Markdown.
+> **Visual overview:** This infographic summarizes the MCP problem, the Host–Client–Server architecture, a sample tool-call workflow, and the main benefits. Some labels in the image are simplified for visual learning; use the detailed sections below for the precise explanations and caveats.
+
+
+## Visual guide: how an MCP tool call works
+
+The infographic above gives the big picture. This smaller diagram focuses on one request from the user to an external service and back.
 
 ```mermaid
-flowchart LR
-    subgraph Models["AI models"]
-        GPT[GPT]
-        Claude[Claude]
-        DeepSeek[DeepSeek]
-    end
-    MCP{{MCP standard}}
-    subgraph Tools["Tools and services"]
-        GH[GitHub]
-        DB[(MySQL)]
-        Pay[Razorpay]
-        Slack[Slack]
-        AWS[AWS]
-    end
-    GPT <--> MCP
-    Claude <--> MCP
-    DeepSeek <--> MCP
-    MCP <--> GH
-    MCP <--> DB
-    MCP <--> Pay
-    MCP <--> Slack
-    MCP <--> AWS
+flowchart TD
+    A[User asks a question] --> B[Host sends message and available tools to the LLM]
+    B --> C[LLM selects a tool and arguments]
+    C --> D[Host / MCP Client sends tools/call]
+    D --> E[MCP Server validates and runs the tool]
+    E --> F[External system returns data or action result]
+    F --> G[Tool result returns through MCP to the host]
+    G --> H[LLM produces the user-facing response]
 ```
 
-**The idea:** instead of writing a separate custom integration for every model–tool pair, an application can connect models and tools through a shared protocol.
+**Remember:** the LLM chooses a tool; the host and MCP client coordinate the call; the MCP server handles the connection to the underlying service.
 
+---
 
 ## Table of Contents
 
